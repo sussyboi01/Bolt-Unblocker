@@ -1,220 +1,548 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+		/>
+		<title>Da Boi Browser</title>
+		<link rel="shortcut icon" content="favicon.ico" />
+		
+		<style>
+			@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap");
 
-<head>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
 
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-  <title>Bolt Unblocker</title>
-  <link rel="icon" type="image/x-icon" href="/assets/imgs/logos/boltlogo11.ico" />
-  <link id="theme" rel="stylesheet" href="/assets/styles/main.css" />
-  <script src="/baremux/index.js"></script>
-  <script src="/uv/uv.bundle.js"></script>
-  <script src="/uv/uv.config.js"></script>
-  <script src="/scram/scramjet.controller.js"></script>
-  <script src="/assets/js/main.js"></script>
-  <script src="/assets/js/loadcloak.js"></script>
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/docklib/partners@master/partner-3b3f1808.js"></script>
-  <!--<script src="https://partner.senty.com.au/partner-3b3f1808.js"></script>-->
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QKPZDPQGCR"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
+			body {
+				font-family: 'Roboto', Arial, Helvetica, sans-serif;
+				background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+				background-size: 400% 400%;
+				animation: gradientShift 15s ease infinite;
+				color: #e0e0ff;
+				height: 100vh;
+				overflow: hidden;
+				position: relative;
+			}
 
-    gtag('config', 'G-QKPZDPQGCR');
-  </script>
-</head>
+			@keyframes gradientShift {
+				0% { background-position: 0% 50%; }
+				50% { background-position: 100% 50%; }
+				100% { background-position: 0% 50%; }
+			}
 
-<body>
-  <script>
-    if (localStorage.getItem('proxy') != 'sj') {
-      localStorage.setItem('proxy', 'sj');
-    }
+			/* Sidebar */
+			#sidebar {
+				position: fixed;
+				left: 0;
+				top: 0;
+				width: 250px;
+				height: 100vh;
+				background: rgba(15, 12, 41, 0.95);
+				border-right: 2px solid #6366f1;
+				box-shadow: 5px 0 30px rgba(99, 102, 241, 0.3);
+				transition: transform 0.3s ease;
+				z-index: 10000;
+				overflow-y: auto;
+			}
 
-  </script>
-  <div class="custom-tooltip" id="tooltip"></div>
-  <div id="title">
-    <h3 id="small">Welcome to Bolt,</h2>
+			#sidebar.collapsed {
+				transform: translateX(-250px);
+			}
 
-      <h1 id="big"></h1>
-  </div>
-  <div id="search-container">
-    <div id="search-bar">
-      <input type="text" id="search-input" placeholder="Search the web..." spellcheck="false" autocomplete="off">
-      <svg class="search-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
-          fill="currentColor" />
-      </svg>
-    </div>
-  </div>
+			#sidebar-toggle {
+				position: fixed;
+				left: 250px;
+				top: 20px;
+				width: 40px;
+				height: 40px;
+				background: rgba(99, 102, 241, 0.8);
+				border: 2px solid #8b5cf6;
+				border-radius: 0 8px 8px 0;
+				cursor: pointer;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				z-index: 10001;
+				transition: all 0.3s ease;
+				box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+			}
 
-  <div id="footer">
-    <div id="logos">
-      <svg id="flogo" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-        width="170.42776" height="319.27237" viewBox="0,0,170.42776,319.27237" data-tooltip="Apps">
-        <g transform="translate(-155.43733,-20.75908)">
-          <g fill="#ffffff" stroke-miterlimit="10">
-            <g stroke="#0091ff" stroke-width="50">
-              <path
-                d="M245.22437,45.74833l0.05174,0.01075c19.53137,4.05763 31.68931,22.59185 27.63168,42.12322l-23.18646,111.60784c-4.05763,19.53137 -22.59185,31.68931 -42.12322,27.63168l-0.05174,-0.01075c-19.53137,-4.05763 -31.68931,-22.59185 -27.63168,-42.12322l23.18646,-111.60784c4.05763,-19.53137 22.59185,-31.68931 42.12322,-27.63168z" />
-              <path
-                d="M272.40189,132.87818l0.05174,0.01075c19.53137,4.05763 31.68931,22.59185 27.63168,42.12322l-23.18646,111.60784c-4.05763,19.53137 -22.59185,31.68931 -42.12322,27.63168l-0.05174,-0.01075c-19.53137,-4.05763 -31.68931,-22.59185 -27.63168,-42.12322l23.18646,-111.60784c4.05763,-19.53137 22.59185,-31.68931 42.12322,-27.63168z" />
-            </g>
-            <g stroke="#61bbff" stroke-width="27">
-              <path
-                d="M245.22437,45.74833l0.05174,0.01075c19.53137,4.05763 31.68931,22.59185 27.63168,42.12322l-23.18646,111.60784c-4.05763,19.53137 -22.59185,31.68931 -42.12322,27.63168l-0.05174,-0.01075c-19.53137,-4.05763 -31.68931,-22.59185 -27.63168,-42.12322l23.18646,-111.60784c4.05763,-19.53137 22.59185,-31.68931 42.12322,-27.63168z" />
-              <path
-                d="M272.40189,132.87818l0.05174,0.01075c19.53137,4.05763 31.68931,22.59185 27.63168,42.12322l-23.18646,111.60784c-4.05763,19.53137 -22.59185,31.68931 -42.12322,27.63168l-0.05174,-0.01075c-19.53137,-4.05763 -31.68931,-22.59185 -27.63168,-42.12322l23.18646,-111.60784c4.05763,-19.53137 22.59185,-31.68931 42.12322,-27.63168z" />
-            </g>
-            <g stroke="none" stroke-width="1">
-              <path
-                d="M245.22437,45.74833l0.05174,0.01075c19.53137,4.05763 31.68931,22.59185 27.63168,42.12322l-23.18646,111.60784c-4.05763,19.53137 -22.59185,31.68931 -42.12322,27.63168l-0.05174,-0.01075c-19.53137,-4.05763 -31.68931,-22.59185 -27.63168,-42.12322l23.18646,-111.60784c4.05763,-19.53137 22.59185,-31.68931 42.12322,-27.63168z" />
-              <path
-                d="M272.40189,132.87818l0.05174,0.01075c19.53137,4.05763 31.68931,22.59185 27.63168,42.12322l-23.18646,111.60784c-4.05763,19.53137 -22.59185,31.68931 -42.12322,27.63168l-0.05174,-0.01075c-19.53137,-4.05763 -31.68931,-22.59185 -27.63168,-42.12322l23.18646,-111.60784c4.05763,-19.53137 22.59185,-31.68931 42.12322,-27.63168z" />
-            </g>
-          </g>
-        </g>
-      </svg>
-    </div>
-    <div id="pinned-apps"></div>
-    <div id="footer-social">
-      <button id="disc" data-tooltip="Discord">
-        <img src="/assets/imgs/otherlogos/discord.svg" id="dlogo" />
-      </button>
-      <button id="yt" data-tooltip="YouTube">
-        <img src="/assets/imgs/otherlogos/youtube.svg" id="ytlogo" />
-      </button>
-      <button id="tt" data-tooltip="TikTok">
-        <img src="/assets/imgs/otherlogos/tiktok.svg" id="ttlogo" />
-      </button>
-      <div id="t"></div>
-    </div>
-  </div>
-  <div id="content">
+			#sidebar.collapsed + #sidebar-toggle {
+				left: 0;
+				border-radius: 0 8px 8px 0;
+			}
 
-  </div>
+			#sidebar-toggle:hover {
+				background: rgba(139, 92, 246, 0.9);
+				box-shadow: 0 0 30px rgba(139, 92, 246, 0.7);
+			}
 
-  <iframe id="apps" src="/srcdocs/apps.html">
+			#sidebar-toggle::before {
+				content: '←';
+				color: #fff;
+				font-size: 20px;
+				font-weight: bold;
+			}
 
-  </iframe>
-  <div class="stars"></div>
+			#sidebar.collapsed + #sidebar-toggle::before {
+				content: '→';
+			}
 
-  <div id="bug-report-notification" data-tooltip="Right-click to close">
-    <div class="notification-content">
-      <span class="bug-icon">🐛</span>
-      <span class="notification-text">Help us improve! Report bugs here</span>
-    </div>
-  </div>
+			.sidebar-section {
+				padding: 20px;
+			}
 
-  <div id="bug-report-modal" class="hidden">
-    <div class="modal-content">
-      <div class="modal-header">
-        <div class="header-icon">
-          <span class="bug-emoji">🐛</span>
-        </div>
-        <h3>Report an Issue</h3>
-        <button id="close-modal">×</button>
-      </div>
-      <div class="modal-body">
-        <p class="report-intro">Help us improve Bolt by reporting any bugs or issues you encounter.</p>
+			.sidebar-section h2 {
+				font-size: 1.2rem;
+				color: #a78bfa;
+				margin-bottom: 15px;
+				text-shadow: 0 0 10px rgba(167, 139, 250, 0.5);
+				border-bottom: 1px solid rgba(99, 102, 241, 0.3);
+				padding-bottom: 10px;
+			}
 
-        <form id="bug-report-form">
-          <div class="form-group">
-            <label for="bug-description">Description:</label>
-            <textarea id="bug-description" placeholder="Please describe what happened and how to reproduce the issue..."
-              required></textarea>
-          </div>
+			.sidebar-item {
+				padding: 12px 15px;
+				margin: 8px 0;
+				background: rgba(99, 102, 241, 0.2);
+				border: 1px solid #6366f1;
+				border-radius: 8px;
+				cursor: pointer;
+				transition: all 0.3s ease;
+				color: #e0e0ff;
+				text-align: center;
+			}
 
-          <div class="form-tabs">
-            <div class="tab-buttons">
-              <button type="button" class="tab-btn active" data-tab="screenshot">Screenshot</button>
-              <button type="button" class="tab-btn" data-tab="details">Details</button>
-            </div>
+			.sidebar-item:hover {
+				background: rgba(139, 92, 246, 0.4);
+				box-shadow: 0 0 15px rgba(139, 92, 246, 0.6);
+				transform: translateX(5px);
+			}
 
-            <div class="tab-content active" id="screenshot-tab">
-              <div class="upload-container">
-                <label for="bug-image" class="upload-label">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-4.86 8.86l-3 3.87L9 13.14 6 17h12l-3.86-5.14z"
-                      fill="#00b7ff" />
-                  </svg>
-                  <span>Drop image here or click to upload</span>
-                </label>
-                <input type="file" id="bug-image" accept="image/*">
-              </div>
-              <div id="image-preview"></div>
-            </div>
+			.sidebar-item.active {
+				background: rgba(139, 92, 246, 0.6);
+				box-shadow: 0 0 20px rgba(139, 92, 246, 0.8);
+			}
 
-            <div class="tab-content" id="details-tab">
-              <div class="form-row">
-                <div class="form-col">
-                  <label for="bug-severity">Severity:</label>
-                  <select id="bug-severity">
-                    <option value="low">Low - Minor inconvenience</option>
-                    <option value="medium" selected>Medium - Function is broken</option>
-                    <option value="high">High - Site is unusable</option>
-                  </select>
-                </div>
-                <div class="form-col">
-                  <label for="bug-page">Where did it happen?</label>
-                  <input type="text" id="bug-page" placeholder="Homepage, app, or URL">
-                </div>
-              </div>
-            </div>
-          </div>
+			/* Main content area */
+			#main-content {
+				position: fixed;
+				left: 250px;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				transition: left 0.3s ease;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+			}
 
-          <div class="form-actions">
-            <div class="status-wrapper">
-              <div id="submission-status" class="hidden"></div>
-            </div>
-            <button type="submit" id="submit-bug">Submit Report</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
+			#sidebar.collapsed ~ #main-content {
+				left: 0;
+			}
 
-  <style>
-    .sz-link {
-      position: fixed;
-      top: 4px;
-      right: 10px;
-      z-index: 999998;
-      font-family: Arial, sans-serif;
-      font-size: 12px;
-      opacity: 0.8;
-      background-color: rgba(255, 255, 255, 0.7);
-      padding: 5px 10px;
-      border-radius: 5px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-      transition: opacity 0.3s ease;
-    }
+			/* Homepage */
+			#homepage {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				width: 100%;
+				height: 100%;
+			}
 
-    .sz-link:hover {
-      opacity: 1;
-    }
+			#homepage.hidden {
+				display: none;
+			}
 
-    .sz-link a {
-      color: #333;
-      text-decoration: none;
-      font-weight: bold;
-    }
-  </style>
-  <script src="/assets/js/ap.js"></script>
-  <script src="/assets/js/time.js"></script>
-  <script src="/assets/js/index.js"></script>
-  <script src="/assets/js/tooltip.js"></script>
-  <script src="/assets/js/bug-reporter.js"></script>
-  <script src="/assets/js/apps.js"></script>
-  <script src="/assets/js/taskbar.js"></script>
-  <script src="/assets/js/window-manager.js"></script>
-  <script src="/assets/js/auth.js"></script>
-  <script src="/assets/js/stars.js"></script>
-</body>
+			.logo-wrapper {
+				text-align: center;
+				margin-bottom: 20px;
+			}
 
+			.logo {
+				width: 150px;
+				height: 150px;
+				filter: drop-shadow(0 0 30px #6366f1) drop-shadow(0 0 60px #8b5cf6);
+				animation: pulse 3s ease-in-out infinite;
+				margin-bottom: 20px;
+			}
+
+			@keyframes pulse {
+				0%, 100% { 
+					filter: drop-shadow(0 0 30px #6366f1) drop-shadow(0 0 60px #8b5cf6);
+					transform: scale(1);
+				}
+				50% { 
+					filter: drop-shadow(0 0 50px #6366f1) drop-shadow(0 0 80px #8b5cf6);
+					transform: scale(1.05);
+				}
+			}
+
+			h1 {
+				font-size: 3rem;
+				background: linear-gradient(45deg, #6366f1, #8b5cf6, #a78bfa);
+				-webkit-background-clip: text;
+				-webkit-text-fill-color: transparent;
+				background-clip: text;
+				text-shadow: 0 0 40px rgba(139, 92, 246, 0.5);
+				font-weight: 700;
+				letter-spacing: 2px;
+			}
+
+			.desc {
+				margin-bottom: 30px;
+				text-align: center;
+			}
+
+			.desc p {
+				font-size: 1.2rem;
+				color: #c4b5fd;
+				text-shadow: 0 0 20px rgba(196, 181, 253, 0.3);
+			}
+
+			#sj-form {
+				margin: 30px 0;
+				width: 90%;
+				max-width: 600px;
+			}
+
+			#sj-address {
+				width: 100%;
+				padding: 18px 25px;
+				font-size: 1.1rem;
+				border: 2px solid #6366f1;
+				border-radius: 50px;
+				background: rgba(30, 27, 75, 0.6);
+				color: #e0e0ff;
+				outline: none;
+				transition: all 0.3s ease;
+				box-shadow: 0 0 20px rgba(99, 102, 241, 0.3), inset 0 0 20px rgba(99, 102, 241, 0.1);
+				font-family: inherit;
+			}
+
+			#sj-address::placeholder {
+				color: #a5b4fc;
+			}
+
+			#sj-address:focus {
+				border-color: #8b5cf6;
+				box-shadow: 0 0 40px rgba(139, 92, 246, 0.6), 
+				            0 0 60px rgba(99, 102, 241, 0.4),
+				            inset 0 0 30px rgba(139, 92, 246, 0.2);
+				transform: translateY(-2px);
+			}
+
+			#sj-error {
+				color: #ff6666 !important;
+				text-align: center;
+				margin-top: 10px;
+				text-shadow: 0 0 10px rgba(255, 102, 102, 0.5);
+			}
+
+			#sj-error-code {
+				background: rgba(30, 27, 75, 0.6);
+				border: 1px solid #6366f1;
+				border-radius: 10px;
+				padding: 15px;
+				margin-top: 10px;
+				color: #e0e0ff;
+				box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
+				max-width: 600px;
+				overflow-x: auto;
+				font-size: 12px;
+				font-family: "Courier New", Courier, monospace;
+			}
+
+			/* Browser iframe */
+			#sj-frame {
+				border: none;
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background-color: #111;
+				display: none;
+			}
+
+			#sj-frame.active {
+				display: block;
+			}
+
+			/* Glowing particles effect */
+			body::before {
+				content: '';
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				background-image: 
+					radial-gradient(2px 2px at 20% 30%, rgba(139, 92, 246, 0.3), transparent),
+					radial-gradient(2px 2px at 60% 70%, rgba(99, 102, 241, 0.3), transparent),
+					radial-gradient(1px 1px at 50% 50%, rgba(167, 139, 250, 0.3), transparent),
+					radial-gradient(1px 1px at 80% 10%, rgba(139, 92, 246, 0.3), transparent);
+				background-size: 200% 200%;
+				animation: stars 20s linear infinite;
+				pointer-events: none;
+				z-index: -1;
+			}
+
+			@keyframes stars {
+				0% { transform: translateY(0); }
+				100% { transform: translateY(-100%); }
+			}
+
+			@media (max-width: 768px) {
+				h1 {
+					font-size: 2rem;
+				}
+
+				.logo {
+					width: 100px;
+					height: 100px;
+				}
+
+				#sj-address {
+					font-size: 1rem;
+					padding: 15px 20px;
+				}
+
+				#sidebar {
+					width: 200px;
+				}
+
+				#sidebar-toggle {
+					left: 200px;
+				}
+
+				#main-content {
+					left: 200px;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<!-- Sidebar -->
+		<div id="sidebar">
+			<div class="sidebar-section">
+				<h2>Navigation</h2>
+				<div class="sidebar-item active" onclick="goHome()">🏠 Home</div>
+			</div>
+			<div class="sidebar-section">
+				<h2>Apps</h2>
+				<div class="sidebar-item" onclick="loadApp('https://www.tiktok.com')">📱 TikTok</div>
+				<div class="sidebar-item" onclick="loadApp('https://www.spenflix.com')">🎬 Spenflix</div>
+			</div>
+		</div>
+
+		<!-- Sidebar toggle button -->
+		<div id="sidebar-toggle" onclick="toggleSidebar()"></div>
+
+		<!-- Main content -->
+		<div id="main-content">
+			<!-- Homepage -->
+			<div id="homepage">
+				<div class="logo-wrapper">
+					<img class="logo" src="sj.png" alt="Da Boi Browser" />
+					<h1>Da Boi Browser</h1>
+				</div>
+				<div class="desc">
+					<p>Da boi browser</p>
+				</div>
+				<form id="sj-form" onsubmit="handleSearch(event)">
+					<input
+						id="sj-search-engine"
+						value="https://duckduckgo.com/?q=%s"
+						type="hidden"
+					/>
+					<input id="sj-address" type="text" placeholder="Search the web freely" />
+				</form>
+				<div class="desc">
+					<p id="sj-error"></p>
+					<pre id="sj-error-code"></pre>
+				</div>
+			</div>
+
+			<!-- Browser iframe -->
+			<iframe id="sj-frame"></iframe>
+		</div>
+
+		<!-- Load scripts before our code -->
+		<script src="/scram/scramjet.all.js"></script>
+		<script src="/baremux/index.js"></script>
+		
+		<script>
+			"use strict";
+
+			// Wait for page to load
+			window.addEventListener('DOMContentLoaded', function() {
+				// Service Worker Configuration
+				const stockSW = "./sw.js";
+				const swAllowedHostnames = ["localhost", "127.0.0.1"];
+
+				// Elements
+				const sidebar = document.getElementById("sidebar");
+				const homepage = document.getElementById("homepage");
+				const frame = document.getElementById("sj-frame");
+				const address = document.getElementById("sj-address");
+				const searchEngine = document.getElementById("sj-search-engine");
+				const error = document.getElementById("sj-error");
+				const errorCode = document.getElementById("sj-error-code");
+
+				// Initialize Scramjet
+				const { ScramjetController } = window.$scramjetLoadController();
+				const scramjet = new ScramjetController({
+					files: {
+						wasm: "/scram/scramjet.wasm.wasm",
+						all: "/scram/scramjet.all.js",
+						sync: "/scram/scramjet.sync.js",
+					},
+				});
+				scramjet.init();
+
+				const connection = new BareMux.BareMuxConnection("/baremux/worker.js");
+
+				// Service Worker Registration Function
+				async function registerSW() {
+					if (!navigator.serviceWorker) {
+						if (
+							location.protocol !== "https:" &&
+							!swAllowedHostnames.includes(location.hostname)
+						)
+							throw new Error("Service workers cannot be registered without https.");
+						throw new Error("Your browser doesn't support service workers.");
+					}
+					await navigator.serviceWorker.register(stockSW);
+				}
+
+				// Search function
+				function search(input, template) {
+					try {
+						return new URL(input).toString();
+					} catch (err) {}
+
+					try {
+						const url = new URL(`http://${input}`);
+						if (url.hostname.includes(".")) return url.toString();
+					} catch (err) {}
+
+					return template.replace("%s", encodeURIComponent(input));
+				}
+
+				// Handle search form submission
+				window.handleSearch = async function(event) {
+					event.preventDefault();
+
+					try {
+						await registerSW();
+					} catch (err) {
+						error.textContent = "Failed to register service worker.";
+						errorCode.textContent = err.toString();
+						throw err;
+					}
+
+					const url = search(address.value, searchEngine.value);
+
+					let wispUrl =
+						(location.protocol === "https:" ? "wss" : "ws") +
+						"://" +
+						location.host +
+						"/wisp/";
+					
+					if ((await connection.getTransport()) !== "/libcurl/index.mjs") {
+						await connection.setTransport("/libcurl/index.mjs", [
+							{ websocket: wispUrl },
+						]);
+					}
+
+					// Hide homepage and show frame
+					homepage.classList.add("hidden");
+					
+					// Navigate to URL using scramjet
+					const frameElement = scramjet.createFrame();
+					frameElement.frame.id = "sj-frame";
+					frameElement.frame.classList.add("active");
+					
+					// Replace the existing frame
+					const oldFrame = document.getElementById("sj-frame");
+					if (oldFrame) {
+						oldFrame.replaceWith(frameElement.frame);
+					}
+					
+					frameElement.go(url);
+				};
+
+				// Load app
+				window.loadApp = async function(appUrl) {
+					try {
+						await registerSW();
+					} catch (err) {
+						error.textContent = "Failed to register service worker.";
+						errorCode.textContent = err.toString();
+						throw err;
+					}
+
+					let wispUrl =
+						(location.protocol === "https:" ? "wss" : "ws") +
+						"://" +
+						location.host +
+						"/wisp/";
+					
+					if ((await connection.getTransport()) !== "/libcurl/index.mjs") {
+						await connection.setTransport("/libcurl/index.mjs", [
+							{ websocket: wispUrl },
+						]);
+					}
+
+					// Hide homepage and show frame
+					homepage.classList.add("hidden");
+					
+					// Create new frame
+					const frameElement = scramjet.createFrame();
+					frameElement.frame.id = "sj-frame";
+					frameElement.frame.classList.add("active");
+					
+					// Replace the existing frame
+					const oldFrame = document.getElementById("sj-frame");
+					if (oldFrame) {
+						oldFrame.replaceWith(frameElement.frame);
+					}
+					
+					frameElement.go(appUrl);
+
+					// Update active state
+					document.querySelectorAll('.sidebar-item').forEach(item => {
+						item.classList.remove('active');
+					});
+				};
+
+				// Go home
+				window.goHome = function() {
+					homepage.classList.remove("hidden");
+					const frameElement = document.getElementById("sj-frame");
+					if (frameElement) {
+						frameElement.classList.remove("active");
+					}
+					address.value = "";
+					
+					// Update active state
+					document.querySelectorAll('.sidebar-item').forEach(item => {
+						item.classList.remove('active');
+					});
+					document.querySelector('.sidebar-item').classList.add('active');
+				};
+
+				// Toggle sidebar
+				window.toggleSidebar = function() {
+					sidebar.classList.toggle("collapsed");
+				};
+			});
+		</script>
+	</body>
 </html>
